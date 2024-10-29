@@ -23,10 +23,18 @@ export interface SearchConfig {
   
   export interface GeneratedAnswer {
     answer: {
-      text: string;
+      answerText: string;
       citations: Array<{
         content: string;
         uri: string;
+      }>;
+      references: Array<{
+        chunkInfo: {
+          content: string;
+          documentMetadata: {
+            uri: string;
+          };
+        };
       }>;
     };
     relatedQuestions?: Array<{

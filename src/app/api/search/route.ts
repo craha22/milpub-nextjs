@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleSearchClient } from '@/lib/googleSearch';
+import { getPub, getPubUrl } from '@/lib/pubs';
 
 const searchClient = new GoogleSearchClient({
   projectId: process.env.GOOGLE_PROJECT_ID!,
@@ -17,15 +18,37 @@ export async function POST(request: Request) {
     }
 
     const searchResults = await searchClient.search(query);
+    
+    const searchResultsOut = searchResults.results.map((result: any) => ({
+        document: {
+          id: result.document.id,
+        },
+        snippet: result.document && result.document.derivedStructData && result.document.derivedStructData.snippets ? result.document.derivedStructData.snippets[0].snippet : "No Snippppet Available"
+      }));
+
     const generatedAnswer = await searchClient.getGeneratedAnswer(
       query,
       searchResults.queryId,
       searchResults.session
     );
+   
+    const references = await Promise.all(
+     generatedAnswer.answer.references.map(async (ref: any) => {
+        const id: string = ref.chunkInfo.documentMetadata.uri.split('/').pop().split('.').shift();
+        const pub_url: string = await getPubUrl(id);
+        return {
+        content: ref.chunkInfo.content,
+        id: id,
+        pub_url: pub_url
+      }
+    }));
+    
+
 
     return NextResponse.json({
-      searchResults,
-      generatedAnswer
+      searchResults: searchResultsOut,
+      generatedAnswer: generatedAnswer.answer.answerText,
+      references
     });
   } catch (error) {
     console.error('Search error:', error);

@@ -5,18 +5,15 @@ import { useState } from 'react'
 interface SearchResult {
   document: {
     id: string;
-    content: any;
   };
-  snippet?: {
-    snippet: string;
-  };
+  snippet: string;
 }
 
 interface GeneratedAnswer {
   text: string;
   citations: Array<{
     content: string;
-    uri: string;
+    pub_url: string;
   }>;
 }
 
@@ -47,17 +44,12 @@ export default function SearchInterface() {
       }
 
       const data = await response.json();
-      setResults(data.searchResults.results);
 
-      const references = data.generatedAnswer.answer.references.map((ref: any) => ({
-          content: ref.chunkInfo.content,
-          uri: ref.chunkInfo.documentMetadata.uri
-      }));
-
+      setResults(data.searchResults);
       setAnswer(
         {
-          text: data.generatedAnswer.answer.answerText, 
-          citations: references
+          text: data.generatedAnswer, 
+          citations: data.references
         }
       );
     } catch (err) {
@@ -78,12 +70,12 @@ export default function SearchInterface() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="Ask anything..."
-            className="text-gray-600 flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="text-gray-600 flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
           />
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="inline-flex items-center px-6 py-3 rounded-lg bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition"
           >
             {loading ? 'Searching...' : 'Search'}
           </button>
@@ -98,16 +90,17 @@ export default function SearchInterface() {
 
       {answer && (
         <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-2 text-gray-600">Generated Answer:</h3>
+          <h3 className="text-lg font-semibold mb-2 text-white">Generated Answer:</h3>
           <div className="bg-gray-50 rounded-lg p-4 text-gray-600">
             <div dangerouslySetInnerHTML={{ __html: answer.text.replace(/\n/g, '<br/>') }} />
             {answer.citations.length > 0 && (
               <div className="mt-4 text-sm text-black-600">
                 <h4 className="font-semibold">Sources:</h4>
                 <ul className="list-disc pl-4">
+                  
                   {answer.citations.map((citation, index) => (
                     <li key={index}>
-                      <a href={citation.uri} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                      <a href={citation.pub_url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
                         {citation.content}
                       </a>
                     </li>
@@ -119,18 +112,18 @@ export default function SearchInterface() {
         </div>
       )}
 
-      {results.length > 0 && (
+      {/* {results.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-2">Search Results:</h3>
+          <h3 className="text-lg font-semibold mb-2">Relevant Snippets:</h3>
           <div className="space-y-4">
             {results.map((result) => (
               <div key={result.document.id} className="border rounded-lg p-4">
-                {result.snippet && <p>{result.snippet.snippet}</p>}
+                <div dangerouslySetInnerHTML={{ __html: result.snippet }} />
               </div>
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
