@@ -105,10 +105,10 @@ export interface SearchConfig {
             ignoreNonAnswerSeekingQuery: true,
             ignoreLowRelevantContent: true,
             includeCitations: true,
-            // promptSpec: {
-            //   preamble: "Given the conversation between a user and a helpful assistant and some search results, create a final answer for the assistant. The answer should use all relevant information from the search results, not introduce any additional information, and use exactly the same words as the search results when possible. The assistant's answer should be no more than 10 sentences. The assistant's answer should be formatted as a bulleted list. Each list item should start with the \"-\" symbol."
-            // },
-            // answerLanguageCode: "en",
+            promptSpec: {
+              preamble: "Given the inquiry from a user and some search results, synthesize a final answer for the assistant to address the search inquiry from the user. The answer should use all relevant information from the search results, not introduce any additional information, and use exactly the same words as the search results when possible. The assistant's answer should be brief, no more than a paragraph or several sentences. Bullet points are also acceptable."
+            },
+            answerLanguageCode: "en",
             modelSpec: {
               modelVersion: "gemini-1.5-flash-001/answer_gen/v2"
             }
