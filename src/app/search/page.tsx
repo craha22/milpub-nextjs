@@ -1,4 +1,3 @@
-import GoogleSearchWidget from '@/components/GoogleSearchWidget'
 import SearchInterface from '@/components/SearchInterface'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
@@ -11,12 +10,6 @@ export default async function Dashboard() {
   if (!user) {
     redirect('/login')
   }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
 
   return (
     <div className="min-h-screen bg-zinc-800 py-12 px-4 sm:px-6 lg:px-8">

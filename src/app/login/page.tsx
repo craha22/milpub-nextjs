@@ -11,9 +11,9 @@ export default function Login() {
   const supabase = createClientComponentClient()
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
         if (event === 'SIGNED_IN') {
-          router.push('/dashboard')
+          router.push('/search')
           router.refresh() // Force a refresh of the server components
         }
       })
@@ -21,7 +21,7 @@ export default function Login() {
       // Cleanup subscription on unmount
       return () => subscription.unsubscribe()
     }, [router, supabase])
-    
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -46,7 +46,7 @@ export default function Login() {
               },
             }}
             providers={['google', 'github']}
-            redirectTo={`${window.location.origin}/auth/callback`}
+            redirectTo={`/auth/callback`}
           />
         </div>
       </div>

@@ -2,13 +2,6 @@
 
 import { useState } from 'react'
 
-interface SearchResult {
-  document: {
-    id: string;
-  };
-  snippet: string;
-}
-
 interface GeneratedAnswer {
   text: string;
   citations: Array<{
@@ -20,7 +13,6 @@ interface GeneratedAnswer {
 export default function SearchInterface() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [answer, setAnswer] = useState<GeneratedAnswer | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,10 +37,9 @@ export default function SearchInterface() {
 
       const data = await response.json();
 
-      setResults(data.searchResults);
       setAnswer(
         {
-          text: data.generatedAnswer, 
+          text: data.generatedAnswer,
           citations: data.references
         }
       );
@@ -97,7 +88,7 @@ export default function SearchInterface() {
               <div className="mt-4 text-sm text-black-600">
                 <h4 className="font-semibold">Sources:</h4>
                 <ul className="list-disc pl-4">
-                  
+
                   {answer.citations.map((citation, index) => (
                     <li key={index}>
                       <a href={citation.pub_url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
@@ -111,19 +102,6 @@ export default function SearchInterface() {
           </div>
         </div>
       )}
-
-      {/* {results.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Relevant Snippets:</h3>
-          <div className="space-y-4">
-            {results.map((result) => (
-              <div key={result.document.id} className="border rounded-lg p-4">
-                <div dangerouslySetInnerHTML={{ __html: result.snippet }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
     </div>
   )
 }

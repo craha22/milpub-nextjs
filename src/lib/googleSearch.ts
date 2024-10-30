@@ -11,7 +11,12 @@ export interface SearchConfig {
     results: Array<{
       document: {
         id: string;
-        content: any;  // Type this based on your content structure
+        content: string;  // Type this based on your content structure
+        derivedStructData: {
+            snippets: Array<{
+              snippet: string;
+            }>;
+          };
       };
       snippet?: {
         snippet: string;

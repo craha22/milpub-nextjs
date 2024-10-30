@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { Shield } from 'lucide-react'
 
 export default async function NavBar() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient(await { cookies })
   const { data: { session } } = await supabase.auth.getSession()
 
   return (

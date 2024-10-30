@@ -1,4 +1,4 @@
-import { Shield, Database, Zap, Clock, Search } from 'lucide-react';
+import { Database, Zap, Clock, Search } from 'lucide-react';
 
 interface FeatureCard {
   title: string;
