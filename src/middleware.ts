@@ -6,21 +6,22 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient({ req, res })
 
-  // Refresh session if expired - required for Server Components
-  await supabase.auth.getSession()
+  // Refresh user if expired - required for Server Components
+  // Check for active user
+  const { data: { user }, error } = await supabase.auth.getUser();
 
-  return res
+  // If no active user, reroute to home
+  if (!user || error) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files
-     */
-    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
+    '/api/:path*',
+    '/search/:path*',
   ],
 }

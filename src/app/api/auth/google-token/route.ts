@@ -8,8 +8,8 @@ export async function GET() {
   
   try {
     // Verify user is authenticated with Supabase
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
       return NextResponse.json(
         { error: 'Not authenticated' }, 
         { status: 401 }

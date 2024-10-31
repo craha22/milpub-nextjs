@@ -5,7 +5,7 @@ import { Shield } from 'lucide-react'
 
 export default async function NavBar() {
   const supabase = createServerComponentClient(await { cookies })
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { user } } = await supabase.auth.getUser()
 
   return (
     <nav className="bg-zinc-800 border-b border-zinc-700">
@@ -18,7 +18,7 @@ export default async function NavBar() {
           </Link>
           
           <div className="flex items-center space-x-4">
-            {!session ? (
+            {!user ? (
               <Link 
                 href="/login" 
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
