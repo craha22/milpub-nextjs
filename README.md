@@ -1,36 +1,30 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## About
+This is a frontend with auth for interacting with a Google Vertex AI Search Agent. 
+The Milpub search agent is populated with the publically available PDFs on https://armypubs.army.mil. 
 
-First, run the development server:
+After creating an account, you can log in an interact with the agent. 
+
+This is a template that can be applied to other collections and applications but one item unique to this one is I have the citation links point back to the URL of the source document. I pull this up via a metadata table in supabase after the Vertex agent supplies the citations. 
+
+## Env Vars
+You need to set the following vars to run this
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_SUPABASE_URL=<your-supabase-url>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-supabase-key>
+
+# Google Cloud settings
+GOOGLE_PROJECT_ID=<your-google-project>
+GOOGLE_LOCATION=<your-google-location>
+GOOGLE_COLLECTION_ID=<your-google-collection> # Probably default-collection
+GOOGLE_ENGINE_ID=<your-google-agent-engine-id>
+
+# Option 1: Path to service account key file
+GOOGLE_APPLICATION_CREDENTIALS=<local-path-to-creds>
+
+# Option 2: JSON credentials string (for production deployments)
+# GOOGLE_CREDENTIALS={"type": "service_account", "project_id": "...", ...}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
